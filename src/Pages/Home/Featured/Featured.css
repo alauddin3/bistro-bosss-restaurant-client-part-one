@@ -1,0 +1,6 @@
+.feature-image{
+    background-color: red;
+    background-image: url('../../../assets/home/featured.jpg');
+    background-repeat: no-repeat;
+    margin: 10px 0px 20px 0px;
+}
