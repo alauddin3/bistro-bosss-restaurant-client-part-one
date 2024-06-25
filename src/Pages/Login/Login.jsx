@@ -1,14 +1,19 @@
-import React, { useContext, useEffect, useRef, useState } from 'react';
+import { useContext, useEffect, useRef, useState } from 'react';
 import { loadCaptchaEnginge, LoadCanvasTemplate, validateCaptcha } from 'react-simple-captcha';
 
 import Swal from 'sweetalert2'
 import { AuthContext } from '../../Authentication/Provider/AuthProvider/AuthProvider';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 
 
 const Login = () => {
-    const [disabled, setDisabled] = useState(true)
 
+    const [disabled, setDisabled] = useState(true)
     const { userSignIn } = useContext(AuthContext);
+
+    const navigate = useNavigate();
+    const location = useLocation();
+    const from = location.state?.userFrom?.pathname || '/';
 
     useEffect(() => {
         loadCaptchaEnginge(6);
@@ -26,7 +31,7 @@ const Login = () => {
         userSignIn(email, password)
             .then(result => {
                 const user = result.user;
-                console.log(user);
+                navigate(from, { replace: true })
             })
             .catch((error) => {
                 const errorCode = error.code;
@@ -103,9 +108,11 @@ const Login = () => {
                                 <input className="btn btn-primary" type="submit" value="Login" disabled={disabled} />
                             </div>
                         </form>
+                        <div className='mb-8 pl-8'><p><small><Link to={'/sign-up'}><button className="btn btn-secondary">New Registration</button></Link></small></p></div>
                     </div>
                 </div>
             </div>
+
         </div>
     );
 };

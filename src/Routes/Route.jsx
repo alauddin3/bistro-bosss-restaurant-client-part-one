@@ -7,6 +7,9 @@ import Menu from "../Pages/Menu/Menu";
 import Order from "../Pages/Order/Order/Order";
 import Login from "../Pages/Login/Login";
 import SignUp from "../Pages/SignUp/SignUp";
+import UsingReactForm from "../Pages/SignUp/UsingReactForm";
+import Secret from "../Pages/Shared/Secret/Secret";
+import PrivateRoute from "./PrivateRoute";
 
 
 export const router = createBrowserRouter([
@@ -33,6 +36,14 @@ export const router = createBrowserRouter([
       {
         path: "sign-up",
         element: <SignUp></SignUp>
+      },
+      {
+        path: "sign-up-react-form",
+        element: <UsingReactForm></UsingReactForm>
+      },
+      {
+        path: "secret-route",
+        element: <PrivateRoute><Secret></Secret></PrivateRoute>
       }
     ]
   },

@@ -3,11 +3,12 @@ import { loadCaptchaEnginge, LoadCanvasTemplate, validateCaptcha } from 'react-s
 
 import Swal from 'sweetalert2'
 import { AuthContext } from '../../Authentication/Provider/AuthProvider/AuthProvider';
+import { Link } from 'react-router-dom';
 
 const SignUp = () => {
     const [disabled, setDisabled] = useState(true)
 
-    const { userCreate } = useContext(AuthContext);
+    const { userCreate, updateUserProfile } = useContext(AuthContext);
 
     useEffect(() => {
         loadCaptchaEnginge(6);
@@ -21,17 +22,30 @@ const SignUp = () => {
         const form = event.target;
         const email = form.email.value;
         const password = form.password.value;
+        const name = form.name.value
         console.log(email, password);
         userCreate(email, password)
             .then(result => {
                 const user = result.user;
                 console.log(user);
+                updateUserProfile(name)
+                    .then(() => {
+                        console.log('Profile Update..');
+                        form.reset();
+                        Swal.fire({
+                            position: "top-end",
+                            icon: "success",
+                            title: "Profile Updated....",
+                            showConfirmButton: false,
+                            timer: 1500
+                        });
+                    })
             })
             .catch((error) => {
                 const errorCode = error.code;
                 const errorMessage = error.message;
                 console.log(errorMessage);
-                if(errorMessage){
+                if (errorMessage) {
                     Swal.fire({
                         icon: "error",
                         text: `${errorMessage}`,
@@ -79,6 +93,13 @@ const SignUp = () => {
                         <form className="card-body" onSubmit={handleSignIn}>
                             <div className="form-control">
                                 <label className="label">
+                                    <span className="label-text">Name</span>
+                                </label>
+                                <input type="text" name='name' placeholder="Name" className="input input-bordered" required />
+                            </div>
+
+                            <div className="form-control">
+                                <label className="label">
                                     <span className="label-text">Email</span>
                                 </label>
                                 <input type="email" name='email' placeholder="email" className="input input-bordered" required />
@@ -102,6 +123,8 @@ const SignUp = () => {
                                 <input className="btn btn-primary" type="submit" value="Signup" disabled={disabled} />
                             </div>
                         </form>
+                        <Link to={'/sign-up-react-form'}><button className="btn btn-secondary">Using React Form</button></Link>
+
                     </div>
                 </div>
             </div>
