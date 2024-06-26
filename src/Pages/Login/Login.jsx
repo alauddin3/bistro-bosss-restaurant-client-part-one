@@ -100,12 +100,16 @@ const Login = () => {
                                     <span className="label-text">Captcha</span>
                                     <div><LoadCanvasTemplate /></div>
                                 </label>
-                                <input type="text" name='captcha' ref={captchaRef} id="user_captcha_input" placeholder='Type the text avobe!!' className="input input-bordered" required onBlur={handleCaptchaOnClick} />
+                                <input type="text" name='captcha' ref={captchaRef} placeholder='Type the text avobe!!' className="input input-bordered" onBlur={handleCaptchaOnClick} />
                             </div>
+
+                            {
+                                /* Make button disbale for captcha */
+                            }
 
                             <div className="form-control mt-6">
 
-                                <input className="btn btn-primary" type="submit" value="Login" disabled={disabled} />
+                                <input className="btn btn-primary" type="submit" value="Login" disabled={false} />
                             </div>
                         </form>
                         <div className='mb-8 pl-8'><p><small><Link to={'/sign-up'}><button className="btn btn-secondary">New Registration</button></Link></small></p></div>

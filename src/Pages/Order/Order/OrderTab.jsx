@@ -6,7 +6,7 @@ const OrderTab = ({ item, isLoading }) => {
         <div className='grid md:grid-cols-3 gap-8'>
 
             {
-                isLoading?<span className="loading loading-dots loading-lg mx-0"></span>: item.map(item => <FoodCard item={item}></FoodCard>)
+                isLoading?<span className="loading loading-dots loading-lg mx-0"></span>: item.map(item => <FoodCard key={item._id} item={item}></FoodCard>)
             }
         </div>
     );
