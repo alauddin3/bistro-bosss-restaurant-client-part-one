@@ -7,7 +7,6 @@ import { AuthContext } from '../Authentication/Provider/AuthProvider/AuthProvide
 
 const useCartData = () => {
     const { user } = useContext(AuthContext);
-
     /**
      * Data as cart object 
      */
