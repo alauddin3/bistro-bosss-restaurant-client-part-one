@@ -12,6 +12,10 @@ import Secret from "../Pages/Shared/Secret/Secret";
 import PrivateRoute from "./PrivateRoute";
 import Dashboard from "../Layout/Dashboard";
 import MyCart from "../Pages/Dashboard/MyCart/MyCart";
+import AddItem from "../Pages/Dashboard/Admin/AddItem";
+import ManageItem from "../Pages/Dashboard/Admin/ManageItem";
+import ManageBooking from "../Pages/Dashboard/Admin/ManageBooking";
+import ManageUser from "../Pages/Dashboard/Admin/ManageUser";
 
 
 export const router = createBrowserRouter([
@@ -54,6 +58,24 @@ export const router = createBrowserRouter([
     path: 'dashboard',
     element: <PrivateRoute><Dashboard></Dashboard></PrivateRoute>,
     children: [
+      /* Admin Access */
+      {
+        path:'add-item',
+        element:<AddItem/>,
+      },
+      {
+        path:'manage-item',
+        element:<ManageItem />
+      },
+      {
+        path:'manage-booking',
+        element:<ManageBooking/>
+      },
+      {
+        path:'manage-user',
+        element:<ManageUser/>
+      },
+      /* User Access */
       {
         path:'mycart',
         element:<MyCart></MyCart>,

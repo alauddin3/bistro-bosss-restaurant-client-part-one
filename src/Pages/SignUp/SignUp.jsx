@@ -3,12 +3,16 @@ import { loadCaptchaEnginge, LoadCanvasTemplate, validateCaptcha } from 'react-s
 
 import Swal from 'sweetalert2'
 import { AuthContext } from '../../Authentication/Provider/AuthProvider/AuthProvider';
-import { Link } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 
 const SignUp = () => {
     const [disabled, setDisabled] = useState(true)
-
     const { userCreate, updateUserProfile } = useContext(AuthContext);
+
+    const navigate = useNavigate();
+    const location = useLocation();
+    const from = location.state?.userFrom?.pathname || '/';
+
 
     useEffect(() => {
         loadCaptchaEnginge(6);
@@ -18,33 +22,48 @@ const SignUp = () => {
 
     const handleSignIn = (event) => {
         event.preventDefault();
-
         const form = event.target;
         const email = form.email.value;
         const password = form.password.value;
         const name = form.name.value
-        console.log(email, password);
+
         userCreate(email, password)
             .then(result => {
                 const user = result.user;
                 console.log(user);
                 updateUserProfile(name)
                     .then(() => {
-                        console.log('Profile Update..');
-                        form.reset();
-                        Swal.fire({
-                            position: "top-end",
-                            icon: "success",
-                            title: "Profile Updated....",
-                            showConfirmButton: false,
-                            timer: 1500
-                        });
+                        /** 
+                         * Insert user data into Mongobd
+                         */
+                        const saveUser = { name: name, email: email };
+                        fetch('http://localhost:5020/users', {
+                            method: 'POST',
+                            headers: {
+                                'content-type': 'application/json'
+                            },
+                            body: JSON.stringify(saveUser)
+                        })
+                            .then(res => res.json())
+                            .then(data => {
+                                if (data.insertedId) {
+                                    form.reset();
+                                    Swal.fire({
+                                        position: "top-end",
+                                        icon: "success",
+                                        title: "Profile Updated....",
+                                        showConfirmButton: false,
+                                        timer: 1500
+                                    });
+                                    navigate(from, { replace: true })
+                                }
+                            })
                     })
             })
             .catch((error) => {
                 const errorCode = error.code;
                 const errorMessage = error.message;
-                console.log(errorMessage);
+                console.log(errorCode);
                 if (errorMessage) {
                     Swal.fire({
                         icon: "error",
